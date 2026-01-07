@@ -1,4 +1,9 @@
 abstract class Routes {
   static const login = '/login';
   static const home = '/home';
+  static const landing = '/landing';
+  static const features = '/features';
+  static const about = '/about';
+  static const contact = '/contact';
+  static const pricing = '/pricing';
 }

@@ -10,6 +10,13 @@ class LoginController extends GetxController {
   final showPassword = false.obs;
   final isLoading = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    emailController.text = 'admin@admin.com';
+    passwordController.text = '123456';
+  }
+
   void toggleShowPassword() {
     showPassword.value = !showPassword.value;
   }

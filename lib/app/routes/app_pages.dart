@@ -1,13 +1,45 @@
 import 'package:get/get.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/landing/bindings/landing_binding.dart';
+import '../modules/landing/views/about_view.dart';
+import '../modules/landing/views/contact_view.dart';
+import '../modules/landing/views/features_view.dart';
+import '../modules/landing/views/landing_view.dart';
+import '../modules/landing/views/pricing_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
-import '../modules/home/views/home_view.dart';
 import 'app_routes.dart';
 
 class AppPages {
-  static const initial = Routes.login;
+  static const initial = Routes.landing;
 
   static final routes = [
+    GetPage(
+      name: Routes.landing,
+      page: () => const LandingView(),
+      binding: LandingBinding(),
+    ),
+    GetPage(
+      name: Routes.features,
+      page: () => const FeaturesView(),
+      binding: LandingBinding(),
+    ),
+    GetPage(
+      name: Routes.about,
+      page: () => const AboutView(),
+      binding: LandingBinding(),
+    ),
+    GetPage(
+      name: Routes.contact,
+      page: () => const ContactView(),
+      binding: LandingBinding(),
+    ),
+    GetPage(
+      name: Routes.pricing,
+      page: () => const PricingView(),
+      binding: LandingBinding(),
+    ),
     GetPage(
       name: Routes.login,
       page: () => const LoginView(),
@@ -16,6 +48,7 @@ class AppPages {
     GetPage(
       name: Routes.home,
       page: () => const HomeView(),
+      binding: HomeBinding(),
     ),
   ];
 }

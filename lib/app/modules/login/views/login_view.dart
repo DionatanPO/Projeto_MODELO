@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../../../core/values/app_colors.dart';
+import '../../../routes/app_routes.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -16,18 +17,14 @@ class LoginView extends GetView<LoginController> {
       backgroundColor: Colors.white,
       body: Row(
         children: [
-          // Branding Side (Desktop Only)
           if (isDesktop)
             Expanded(
               flex: 1,
               child: _buildBrandingSide(context),
             ),
-
-          // Login Side
           Expanded(
-            flex: isDesktop ? 1 : 1,
             child: Container(
-              color: isDesktop ? Colors.white : const Color(0xFFF8FAFC),
+              color: isDesktop ? Colors.white : AppColors.background,
               child: SafeArea(
                 child: Center(
                   child: SingleChildScrollView(
@@ -64,14 +61,7 @@ class LoginView extends GetView<LoginController> {
   Widget _buildBrandingSide(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF1E293B),
-            Color(0xFF0F172A),
-          ],
-        ),
+        gradient: AppColors.primaryGradient,
       ),
       child: Stack(
         children: [
@@ -80,7 +70,7 @@ class LoginView extends GetView<LoginController> {
             left: -100,
             child: CircleAvatar(
               radius: 200,
-              backgroundColor: Colors.blueAccent.withOpacity(0.05),
+              backgroundColor: Colors.white.withOpacity(0.05),
             ),
           ),
           Center(
@@ -105,21 +95,19 @@ class LoginView extends GetView<LoginController> {
                   const SizedBox(height: 40),
                   Text(
                     'Infraestrutura Digital\npara o Futuro.',
-                    style: GoogleFonts.outfit(
-                      fontSize: 48,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                      height: 1.1,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontSize: 48,
+                          color: AppColors.textLight,
+                          height: 1.1,
+                        ),
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Gerencie seu Projeto MODELO com a melhor experiência de usuário e as tecnologias mais recentes do mercado.',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      color: Colors.white.withOpacity(0.7),
-                      height: 1.5,
-                    ),
+                    'Gerencie seu Projeto MODELO com a melhor experiência de usuário e as tecnologias mais recentes.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textLight.withOpacity(0.7),
+                          height: 1.5,
+                        ),
                   ),
                 ],
               ),
@@ -137,7 +125,7 @@ class LoginView extends GetView<LoginController> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFF334155),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(
@@ -149,12 +137,10 @@ class LoginView extends GetView<LoginController> {
           const SizedBox(height: 12),
           Text(
             'MODELO',
-            style: GoogleFonts.outfit(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 2,
-              color: const Color(0xFF1E293B),
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  letterSpacing: 2,
+                  color: AppColors.textPrimary,
+                ),
           ),
         ],
       ),
@@ -167,19 +153,14 @@ class LoginView extends GetView<LoginController> {
       children: [
         Text(
           'Acesse sua conta',
-          style: GoogleFonts.outfit(
-            fontSize: 32,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF1E293B),
-          ),
+          style: Theme.of(context).textTheme.displaySmall,
         ),
         const SizedBox(height: 12),
         Text(
           'Entre com suas credenciais para gerenciar seus dados.',
-          style: GoogleFonts.inter(
-            fontSize: 16,
-            color: const Color(0xFF64748B),
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: AppColors.textSecondary,
+              ),
         ),
       ],
     );
@@ -191,6 +172,7 @@ class LoginView extends GetView<LoginController> {
       child: Column(
         children: [
           _buildTextField(
+            context,
             label: 'E-mail Institucional',
             hint: 'exemplo@projeto.com',
             icon: Icons.mail_outline_rounded,
@@ -199,19 +181,13 @@ class LoginView extends GetView<LoginController> {
                 GetUtils.isEmail(val ?? '') ? null : 'E-mail inválido',
           ),
           const SizedBox(height: 24),
-          _buildPasswordField(),
+          _buildPasswordField(context),
           const SizedBox(height: 16),
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {},
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF3B82F6),
-              ),
-              child: Text(
-                'Esqueceu sua senha?',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-              ),
+              child: const Text('Esqueceu sua senha?'),
             ),
           ),
           const SizedBox(height: 32),
@@ -221,7 +197,8 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildTextField(
+    BuildContext context, {
     required String label,
     required String hint,
     required IconData icon,
@@ -233,51 +210,48 @@ class LoginView extends GetView<LoginController> {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF334155),
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
         ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           validator: validator,
-          style:
-              GoogleFonts.inter(fontSize: 15, color: const Color(0xFF1E293B)),
-          decoration: _inputDecoration(hint, icon),
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: Icon(icon, size: 20),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Senha de Acesso',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF334155),
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
         ),
         const SizedBox(height: 8),
         Obx(() => TextFormField(
               controller: controller.passwordController,
               obscureText: !controller.showPassword.value,
-              style: GoogleFonts.inter(
-                  fontSize: 15, color: const Color(0xFF1E293B)),
-              decoration: _inputDecoration(
-                '••••••••',
-                Icons.lock_outline_rounded,
-                suffix: IconButton(
+              decoration: InputDecoration(
+                hintText: '••••••••',
+                prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20),
+                suffixIcon: IconButton(
                   icon: Icon(
                     controller.showPassword.value
                         ? Icons.visibility_off_rounded
                         : Icons.visibility_rounded,
-                    color: const Color(0xFF94A3B8),
+                    color: AppColors.textMuted,
                     size: 20,
                   ),
                   onPressed: controller.toggleShowPassword,
@@ -290,45 +264,13 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
-  InputDecoration _inputDecoration(String hint, IconData icon,
-      {Widget? suffix}) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8)),
-      prefixIcon: Icon(icon, color: const Color(0xFF64748B), size: 20),
-      suffixIcon: suffix,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFEF4444)),
-      ),
-    );
-  }
-
   Widget _buildSubmitButton() {
     return Obx(() => Container(
-          width: double.infinity,
-          height: 60,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               if (!controller.isLoading.value)
                 BoxShadow(
-                  color: const Color(0xFF3B82F6).withOpacity(0.2),
+                  color: AppColors.accent.withOpacity(0.2),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -336,13 +278,6 @@ class LoginView extends GetView<LoginController> {
           ),
           child: ElevatedButton(
             onPressed: controller.isLoading.value ? null : controller.login,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1E293B),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
             child: controller.isLoading.value
                 ? const SizedBox(
                     height: 24,
@@ -350,39 +285,35 @@ class LoginView extends GetView<LoginController> {
                     child: CircularProgressIndicator(
                         color: Colors.white, strokeWidth: 3),
                   )
-                : Text(
-                    'Entrar no Sistema',
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
+                : const Text('Entrar no Sistema'),
           ),
         ));
   }
 
   Widget _buildFooter(BuildContext context) {
-    return Center(
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          Text(
-            "Precisa de acesso? ",
-            style: GoogleFonts.inter(color: const Color(0xFF64748B)),
-          ),
-          TextButton(
-            onPressed: () {},
-            style:
-                TextButton.styleFrom(foregroundColor: const Color(0xFF3B82F6)),
-            child: Text(
-              'Fale com o Administrador',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700),
+    return Column(
+      children: [
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(
+              "Precisa de acesso? ",
+              style: TextStyle(color: AppColors.textSecondary),
             ),
-          ),
-        ],
-      ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Fale com o Administrador'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        TextButton.icon(
+          onPressed: () => Get.offAllNamed(Routes.landing),
+          icon: const Icon(Icons.arrow_back_rounded, size: 18),
+          label: const Text('Voltar para o site público'),
+        ),
+      ],
     );
   }
 }
